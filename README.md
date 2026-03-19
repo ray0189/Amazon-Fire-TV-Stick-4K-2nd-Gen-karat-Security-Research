@@ -422,6 +422,13 @@ Amazon's preloader blocks the standard MTK USB handshake. Software BROM crash do
 - Any prior karat research
 
 ---
+## CVE Note
+
+CVE-2026-20435 (published 2026-03-02) affects MT8696. 
+Logic error in MediaTek preloader — allows reading device 
+unique identifiers with physical access. Does not provide 
+write access or RPMB bypass but relevant for further 
+preloader research.
 
 ## Researcher
 
