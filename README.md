@@ -425,7 +425,7 @@ Amazon's preloader blocks the standard MTK USB handshake. Software BROM crash do
 
 ## Researcher
 
-**Rayyan Rahman** — East London, UK  
+ — UK  
 Research conducted: 18–19 March 2026  
 Tools: ADB, fastboot, dtc, payload-dumper-go, mtkclient, Magisk v30.7, FT232, picocom  
 
