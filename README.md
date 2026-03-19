@@ -422,61 +422,44 @@ Amazon's preloader blocks the standard MTK USB handshake. Software BROM crash do
 - Any prior karat research
 
 ---
+## CVE-2026-20435 — MediaTek Preloader Information Disclosure
 
-CVE-2026-20435 — MediaTek Preloader Information Disclosure
-Published: 2026-03-02
-Last Updated: 2026-03-03
-Classification: CWE-522 (Insufficiently Protected Credentials)
-Attack Vector: Physical access required
-Affected Chipsets (relevant to this research)
-MT8696 is explicitly listed in the affected chipset list alongside the broader MT8100/MT8600/MT8700 series:
-MediaTek MT8100/MT8600/MT8700 series:
+**Published:** 2026-03-02  
+**Classification:** CWE-522 (Insufficiently Protected Credentials)  
+**Attack Vector:** Physical access required  
+
+### Affected Chipsets
+
+MT8696 is explicitly listed in the affected chipset list:
+```
 MT8169, MT8186, MT8188, MT8370, MT8390,
 MT8676, MT8678, MT8696, MT8793, MT2737
-The karat Fire Stick 4K 2nd Gen runs MT8696D — confirmed affected.
-What the Vulnerability Is
-A logic error in the MediaTek preloader component that fails to properly validate the context in which requests for device-unique identifiers are made. When the preloader processes certain commands during the boot sequence, it does not adequately verify whether the requesting entity should have access to sensitive identifiers such as:
+```
 
-IMEI / serial numbers
-Hardware-specific cryptographic keys
-Device unique identifiers used in authentication
+The karat Fire Stick 4K 2nd Gen runs MT8696D — **confirmed affected.**
 
-Root cause is CWE-522 — the preloader fails to implement proper access controls when handling credential requests, allowing these values to be read without proper authentication.
-Attack Vector
-Physical access to device
-        ↓
-Connect via USB or UART debug port
-        ↓
-Issue commands during early boot phase
-before main OS loads any security controls
-        ↓
-Read device unique identifiers
-No elevated privileges required
-No user interaction required
-What This Means for Karat Research
-What it DOES:
+### What the Vulnerability Is
 
-Confirms MT8696D preloader has a known logic error in access control
-Confirms the preloader CAN be communicated with during early boot via USB or UART
-The vulnerability was discovered and reported — meaning someone has working preloader communication code
-May reveal the preloader command structure used to query identifiers
+A logic error in the MediaTek preloader fails to properly validate requests for device-unique identifiers during the boot sequence. Allows reading of:
 
-What it DOES NOT do:
+- Serial numbers / IMEI
+- Hardware-specific cryptographic keys  
+- Device unique identifiers used in authentication
 
-Does not provide write access to any partition
-Does not bypass RPMB authentication
-Does not give code execution
-Is not a direct root path
+No elevated privileges required. No user interaction required. Physical access only.
 
-Research Implications
-The existence of this CVE confirms:
+### What This Means for Karat Research
 
-The MT8696D preloader does expose a USB/UART interface during early boot that accepts commands
-Someone has working code to communicate with the preloader at this level
-The preloader command handling has logic errors — there may be more than just this one
+**Does:**
+- Confirms MT8696D preloader accepts commands during early boot via USB or UART
+- Confirms someone has working preloader communication code
+- May reveal preloader command structure
 
-The PoC for CVE-2026-20435 is not yet public. When it drops it may provide a working preloader communication framework that could be adapted for deeper research — including potentially finding the BROM handshake sequence that mtkclient currently fails to complete on this device.
-
+**Does NOT:**
+- Provide write access to any partition
+- Bypass RPMB
+- Give code execution
+- Direct root path
 
 ## Researcher
 
