@@ -460,7 +460,35 @@ No elevated privileges required. No user interaction required. Physical access o
 - Bypass RPMB
 - Give code execution
 - Direct root path
+## fos_flags — Complete Root Path Documented
 
+### Flag Values (from /system/init.fosflags.sh)
+FOS_FLAGS_ADB_ON          = 0x1
+FOS_FLAGS_CONSOLE_ON      = 0x4
+FOS_FLAGS_RAMDUMP_ON      = 0x8
+FOS_FLAGS_VERBOSITY_ON    = 0x10
+FOS_FLAGS_ADB_AUTH_DISABLE = 0x20
+FOS_FLAGS_BOOT_DEXOPT     = 0x100
+
+### To get root ADB
+Write 0x21 to /proc/idme/fos_flags
+(0x1 ADB_ON + 0x20 ADB_AUTH_DISABLE)
+Reboot → ADB root shell, no auth required
+
+### Storage
+Read from: /proc/idme/fos_flags (currently = 0)
+idme HAL: fireos.hardware.idme@1.0-service
+Runs as: system user
+Binary: /vendor/bin/hw/fireos.hardware.idme@1.0-service
+
+### Blocker
+SELinux Enforcing
+Shell context: u:r:shell:s0
+Need: system context to write idme
+
+### onetime_unlock also exists in LK
+amzn_set_onetime_unlock_code
+amzn_verify_onetime_unlock_code
 ## Researcher
 
  — UK  
